@@ -1,0 +1,261 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Trabalho_de_Geo_Csharp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+        //Cidade Aripuanã MT, Mês:Maio
+        //Fonte:https://pt.weatherspark.com/d/28812/5/1/Condi%C3%A7%C3%B5es-meteorol%C3%B3gicas-caracter%C3%ADsticas-de-Aripuan%C3%A3-Mato-Grosso-Brasil-em-1-de-maio
+        inicio:
+            double[,] Matriz =
+            {
+           //Tmax,TMin,Umi,Pre
+                {29,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {36,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,20 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,14},
+                {30,20,60,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,9 },
+                //22, pesquisa n funciona aq
+                {30,20,5,8 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,0 },
+                {30,18,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+                {30,20,5,7 },
+            };
+            double[,] SMatriz = new double[5, 4];
+            int ct, i, DiaMQ, DiaMF, DiaMC, DiaMU, QDCA20, QDUA60, DCMVT, QDCoCh, QDSeCh, DP;
+            double MTempMa, MTempMi, MUmi, MPre, MDCoCh;
+            double Var, TempMa, TempMin, PrecM, UmiM;
+            UmiM = TempMa = PrecM = 0;
+            TempMin = 100;
+            MDCoCh = DCMVT = QDCA20 = QDUA60 = DiaMC = DiaMF = DiaMQ = DiaMU = QDSeCh = QDCoCh = DP = 0;
+            Var = MTempMa = MTempMi = MPre = MUmi = 0;
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("=== Analise Climatica do Mês ===");
+            Console.WriteLine("1. Médias do Mês");
+            Console.WriteLine("2. Valores Extremos");
+            Console.WriteLine("3. Distribuições");
+            Console.WriteLine("4. Análises Avançadas");
+            Console.WriteLine("5. Ordenação e Pesquisa");
+            Console.WriteLine("6. Comparações Semanais");
+            Console.WriteLine("7. Criatividade");
+            Console.WriteLine("8. Sair");
+            Console.Write("Digite a opção que deseja: ");
+            int escolha = int.Parse(Console.ReadLine());
+            do
+            {
+                if (escolha < 0 || escolha > 9)
+                {
+                    Console.Write("Opção Invalida, digite outra opção: ");
+                    escolha = int.Parse(Console.ReadLine());
+                }
+            }
+            while (escolha < 0 || escolha > 9);
+
+
+            switch (escolha)
+            {
+                case 1:
+                    Console.Clear();
+                    for (ct = 0; ct < 30; ct++)
+                    {
+                        MTempMa += Matriz[ct, 0];
+                        MTempMi += Matriz[ct, 1];
+                        MUmi += Matriz[ct, 2];
+                        MPre += Matriz[ct, 3];
+                    }
+                    MTempMa /= 30;
+                    MTempMi /= 30;
+                    MUmi /= 30;
+                    MPre /= 30;
+                    Console.WriteLine("=== Medias do Mês ===");
+                    Console.WriteLine("Medias:");
+                    Console.WriteLine($"Temperatura Maxima: {Math.Round(MTempMa, 2)} °C");
+                    Console.WriteLine($"Temperatura Minima: {Math.Round(MTempMi, 2)} °C");
+                    Console.WriteLine($"Umidade: {Math.Round(MUmi, 2)} %");
+                    Console.WriteLine($"Precipitação: {Math.Round(MPre, 2)} mm");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 2:
+                    Console.Clear();
+                    for (ct = 0; ct < 30; ct++)
+                    {
+                        if (Matriz[ct, 0] > TempMa)
+                        {
+                            DiaMQ = ct;
+                            TempMa = Matriz[ct, 0];
+                        }
+                        if (TempMin > Matriz[ct, 1])
+                        {
+                            DiaMF = ct;
+                            TempMin = Matriz[ct, 1];
+                        }
+                        if (Matriz[ct, 2] > UmiM)
+                        {
+                            DiaMU = ct;
+                            UmiM = Matriz[ct, 2];
+                        }
+                        if (Matriz[ct, 3] > PrecM)
+                        {
+                            DiaMC = ct;
+                            PrecM = Matriz[ct, 3];
+                        }
+                    }
+                    Console.WriteLine("=== Valores Extremos ===");
+                    Console.WriteLine($"Dia Mais Quente: {DiaMQ + 1}, Temp Max.:{Math.Round(Matriz[DiaMQ, 0], 2)}");
+                    Console.WriteLine($"Dia Mais Frio: {DiaMF + 1}, Temp Min.:{Math.Round(Matriz[DiaMF, 1], 2)}");
+                    Console.WriteLine($"Dia Mais Umido: {DiaMU + 1}, Umidade:{Math.Round(Matriz[DiaMU, 1], 2)}");
+                    Console.WriteLine($"Dia Mais Chuvoso: {DiaMC + 1}, Precipitação:{Math.Round(Matriz[DiaMC, 3], 2)}");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 3:
+                    Console.Clear();
+                    for (ct = 0; ct < 30; ct++)
+                    {
+                        if (Matriz[ct, 3] > 20)
+                            QDCA20++;
+                        if (Matriz[ct, 2] < 60)
+                            QDUA60++;
+                    }
+                    Console.WriteLine("=== Distribuições ===");
+                    Console.WriteLine($"Quantidade de dias com chuva acima de 20mm: {QDCA20}");
+                    Console.WriteLine($"Quantidade de dias com umidade abaixo de 60%: {QDUA60}");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 4:
+                    Console.Clear();
+                    for (ct = 0; ct < 30; ct++)
+                    {
+
+                        if (Matriz[ct, 0] - Matriz[ct, 1] > Var)
+                        {
+                            DCMVT = ct;
+                            Var = Matriz[ct, 0] - Matriz[ct, 1];
+                        }
+                        if (Matriz[ct, 3] == 0)
+                        {
+                            QDSeCh++;
+                        }
+                        else
+                        {
+                            QDCoCh++;
+                            MDCoCh += Matriz[ct, 3];
+                        }
+                    }
+                    MDCoCh /= QDCoCh;
+                    Console.WriteLine($"Dia com Maior variação termica: {DCMVT + 1}, Var.Termica:{Math.Round(Var, 2)}");
+                    Console.WriteLine($"Quantidade de dias com chuva:{QDCoCh}");
+                    Console.WriteLine($"Media dos dias com chuva: {Math.Round(MDCoCh, 2)}");
+                    Console.WriteLine($"Dias sem chuva:{QDSeCh}");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 5:
+                caso5:
+                    Console.Clear();
+                    Console.WriteLine("1.Ordernar por Temperatura Maxima:");
+                    Console.WriteLine("2.Pesquisar Precipitação:");
+                    Console.WriteLine("3.Voltar:");
+                    Console.WriteLine("Digite a opção desejada:");
+                    int escolha2 = int.Parse(Console.ReadLine());
+                    do
+                    {
+                        if (escolha2 < 0 || escolha2 > 4)
+                        {
+                            Console.Write("Opção Invalida, digite outra opção: ");
+                            escolha2 = int.Parse(Console.ReadLine());
+                        }
+                    }
+                    while (escolha2 < 0 || escolha2 > 4);
+
+                    switch (escolha2)
+                    {
+                        case 1:
+                            Console.Clear();
+                            goto caso5;
+
+
+                        case 2:
+                            Console.Clear();
+                            Console.WriteLine("Digite a quantidade de mm que você deseja pesquisar:");
+                            double pesq = double.Parse(Console.ReadLine());
+                            bool chave = false;
+                            for (ct = 0; ct < 30; ct++)
+                            {
+                                if (chave == false)
+                                    if (Matriz[ct, 3] == pesq)
+                                    {
+                                        chave = true;
+                                        DP = ct;
+                                        ct = 29;
+                                    }
+                                ct++;
+                            }
+                            if (chave == false)
+                            {
+                                Console.WriteLine("Precipitação não encontrada");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Precipitação encontrada no dia:{DP+1}");
+                            }
+                            Console.WriteLine("Digite ENTER para continuar");
+                            Console.ReadKey();
+                            goto caso5;
+                        case 3:
+                            goto inicio;
+                    }
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 6:
+                    Console.Clear();
+                    Console.WriteLine("Em construção");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 7:
+                    Console.Clear();
+                    Console.WriteLine("Em construção");
+                    Console.WriteLine("Digite ENTER para continuar");
+                    Console.ReadKey();
+                    goto inicio;
+                case 8:
+                    break;
+            }
+        }
+    }
+}
+
+
